@@ -6,7 +6,7 @@ The code for the paper:
 Ling Luo, Yulia Gryaditskaya, Yongxin Yang, Tao Xiang, Yi-Zhe Song
 Proceedings of International Conference on 3D Vision (3DV), 2020
 ```
-Project page: [https://tinyurl.com/3DSketch3DV]https://tinyurl.com/3DSketch3DV
+Project page: https://tinyurl.com/3DSketch3DV
 # Description
 The repository provides the code for synthetic sketch generation and the evaluated deep models.
 
