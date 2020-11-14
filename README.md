@@ -40,8 +40,20 @@ https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/
 ```
 ## 3. Syntheic sketch generation
 ### Dependencies
-* ligigl https://libigl.github.io/
+* libigl https://libigl.github.io/
 ### Step 1: Aggregation (C++)
+To compile the code in SyntheticSketches/merge_lines, please see the README in SyntheticSketches/merge_lines
+```
+python SyntheticSketches/agrregate_network folder_netwroks folder_save executable_path
+```
+where
+`folder_netwroks`
+is a path to the networks generated with FlowRep;
+`folder_save`
+the path where to save the cleaned networks;
+`executable_path`
+the path to a compiled SyntheticSketches/merge_lines.
+
 ### Step 2: Aggregation & Distortion (Python)
 
 # Deep models
