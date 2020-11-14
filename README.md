@@ -68,4 +68,3 @@ Cooming soon.
 
 # Contact information
 Ling Luo: ling.rowling.luo@gmail.com
-Yulia Gryaditskaya: yulia.gryaditskaya@gmail.com
