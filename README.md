@@ -48,7 +48,7 @@ python SyntheticSketches/agrregate_network folder_netwroks folder_save executabl
 ```
 where
 `folder_netwroks`
-is a path to the netorks generated with FlowRep;
+is a path to the networks generated with FlowRep;
 `folder_save`
 the path where to save the cleaned networks;
 `executable_path`
