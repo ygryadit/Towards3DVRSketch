@@ -65,3 +65,7 @@ is a path to the networks from the previous step or generated with FlowRep;
 the path where to save the synthetic sketches.
 # Deep models
 Cooming soon.
+
+# Contact information
+Ling Luo: ling.rowling.luo@gmail.com
+Yulia Gryaditskaya: yulia.gryaditskaya@gmail.com
