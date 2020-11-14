@@ -17,6 +17,17 @@ https://github.com/hjwdzh/ManifoldPlus
 ## 2. Extract curve networks
 To extract the curve netwrok we use the auhtors implementation of this paper:
 https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/
+@article{59,
+  author  = {Gori, Giorgio and Sheffer, Alla and Vining, Nicholas and Rosales, Enrique and Carr, Nathan and Ju, Tao},
+  title   = {FlowRep: Descriptive Curve Networks for Free-Form Design Shapes},
+  journal = {ACM Transaction on Graphics},
+  year    = {2017},
+  volume = {36},
+  number = {4},
+  doi = {http://dx.doi.org/10.1145/3072959.3073639},
+  publisher = {ACM},
+  address = {New York, NY, USA}
+}
 
 ## 3. Synhteic sketch generation
 
