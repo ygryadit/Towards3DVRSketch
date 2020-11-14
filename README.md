@@ -15,7 +15,7 @@ Since many shapes in the publicly available datasets are not manifold shapes, we
 https://github.com/hjwdzh/ManifoldPlus
 
 ## 2. Extract curve networks
-To extract the curve netwrok we the auhtors implementation of this paper:
+To extract the curve netwrok we use the auhtors implementation of this paper:
 https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/
 
 ## 3. Synhteic sketch generation
