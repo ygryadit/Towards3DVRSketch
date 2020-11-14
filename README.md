@@ -39,5 +39,9 @@ https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/
 }
 ```
 ## 3. Syntheic sketch generation
+### Dependencies
+* ligigl https://libigl.github.io/
+### Step 1: Aggregation (C++)
+### Step 2: Aggregation & Distortion (Python)
 
 # Deep models
