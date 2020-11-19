@@ -23,7 +23,7 @@ def add_args(parser):
                         help='Whether to use uniform [default: False]')
 
     # Triplet Loss
-    parser.add_argument('-margin', type=float, default=1.8, help='margin for triplet center loss')
+    parser.add_argument('-margin', type=float, default=1.8, help='margin for triplet loss / triplet center loss')
     parser.add_argument('-w1', type=float, default=1, help='weight for classification loss')
     parser.add_argument('-w2', type=float, default=0.1)
     parser.add_argument('-w3', type=float, default=0.1)
@@ -32,7 +32,6 @@ def add_args(parser):
     parser.add_argument('-n_samples', type=int, default=1)
     parser.add_argument("-triplet_type", type=str, help="Name of the experiment", default="tpl")
 
-    parser.add_argument("-submit", action='store_true', help="whether submitted", default=False)
     parser.add_argument('-print-freq', type=int, default=50)
     parser.add_argument('-gradient_clip', type=float, default=0.05)  # previous i set it to be 0.01
     parser.add_argument("-network_target", action='store_true', help="whether submitted", default=False)

@@ -1,6 +1,13 @@
-## Training/evaluating the network
+# Training/evaluating the network
 ---
-Prerequisites
+## Prerequisites
 
-Dataset
+- tensorboardX
+
+## Dataset
+
+
+## Training
+
+Change the root_dir in config.py to your data path.
 

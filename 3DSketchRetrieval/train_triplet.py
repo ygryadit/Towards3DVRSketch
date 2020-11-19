@@ -1,6 +1,6 @@
 import argparse
 import numpy as np
-import os, shutil, json
+import os, json
 import torch
 import datetime
 import logging
@@ -51,9 +51,6 @@ def log_string(str, logger):
 def main(args):
 
     # '''HYPER PARAMETER'''
-    if not args.submit:
-        os.environ["CUDA_VISIBLE_DEVICES"] = '2'
-
     '''CREATE DIR'''
     timestr = str(datetime.datetime.now().strftime('%Y-%m-%d_%H-%M'))
     # experiment_dir = Path('./log/')
