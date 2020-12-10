@@ -64,7 +64,7 @@ is a path to the networks from the previous step or generated with FlowRep;
 `folder_save`
 the path where to save the synthetic sketches.
 # Deep models
-Cooming soon.
+The deep models and their usage is described in the subfolder: 'deep_models'
 
 # Contact information
 Ling Luo: ling.rowling.luo@gmail.com
