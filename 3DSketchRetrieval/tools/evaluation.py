@@ -4,6 +4,24 @@ import torch
 # from rank_metrics import mean_average_precision
 # import ipdb
 
+def compute_acc_at_k(dist):
+    pair_sort = np.argsort(dist)
+    count_1 = 0
+    count_5 = 0
+    count_10 = 0
+    query_num = pair_sort.shape[0]
+    for idx1 in range(0, query_num):
+        if idx1 in pair_sort[idx1, 0:1]:
+            count_1 = count_1 + 1
+        if idx1 in pair_sort[idx1, 0:5]:
+            count_5 = count_5 + 1
+        if idx1 in pair_sort[idx1, 0:10]:
+            count_10 = count_10 + 1
+    acc_1 = count_1 / float(query_num)
+    acc_5 = count_5 / float(query_num)
+    acc_10 = count_10 / float(query_num)
+    return [acc_1, acc_5, acc_10]
+
 def precision_at_k(r, k):
     assert k >= 1
     r = np.asarray(r)[:k] != 0

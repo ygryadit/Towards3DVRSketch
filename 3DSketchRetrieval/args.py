@@ -3,7 +3,13 @@ import argparse
 def add_args(parser):
     '''PARAMETERS'''
     parser = argparse.ArgumentParser('PointNet')
-    parser.add_argument('-dataset', type=str, default='ModelNet10', help='THe name of dataset')
+    # data options
+    parser.add_argument('-list_file', type=str, default="hs/{}.txt",
+                        help="Path to the namelist file")
+    parser.add_argument('-num_class', default=10, type=int, help='number of classes')
+    parser.add_argument('-data_dir', type=str, default="/vol/vssp/datasets/multiview/3VS/all_networks",
+                        help="Path to the training data")
+
     parser.add_argument("-name", "--name", type=str, help="Name of the experiment", default="pointnet")
     parser.add_argument('-abstract', type=str, default="0.5", help='The degree of abstractness')
 
@@ -30,7 +36,7 @@ def add_args(parser):
 
     parser.add_argument('-n_classes', type=int, default=4)
     parser.add_argument('-n_samples', type=int, default=1)
-    parser.add_argument("-triplet_type", type=str, help="Name of the experiment", default="tpl")
+    parser.add_argument("-triplet_type", type=str, help="Type of the triplet loss", default="tl", choices={'tl', 'tcl'})
 
     parser.add_argument('-print-freq', type=int, default=50)
     parser.add_argument('-gradient_clip', type=float, default=0.05)  # previous i set it to be 0.01
@@ -40,9 +46,14 @@ def add_args(parser):
     parser.add_argument("-reconstruct", action='store_true', help="whether submitted", default=False)
     parser.add_argument("-sketch_target", type=str, default='')
 
-    parser.add_argument("-sketch_dir", type=str, default='coverage20_modelnet_merge_update')
     parser.add_argument("-view_type", type=str, default='whiteshaded')
     parser.add_argument("-random_sample", action='store_true', help="whether submitted", default=False)
+
+    parser.add_argument('-windows', action='store_true',
+                        help='Whether debug locally.')
+    parser.add_argument('-debug', action='store_true',
+                        help='Whether debug locally.')
+    parser.add_argument("-model_path", type=str, default='')
 
     return parser
 

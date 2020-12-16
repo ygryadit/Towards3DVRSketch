@@ -2,6 +2,26 @@ import torch.utils.data
 import torch
 from config import DATASETS, NUM_VIEWS
 
+def get_test_dataloader(args):
+    from dataset.PointCloudLoader_FG import PointCloudDataLoader
+    test_batch_size = 16
+    test_shape_dataset = PointCloudDataLoader(npoints=1024, list_file=args.list_file,
+                                              uniform=True,
+                                               data_dir=args.data_dir,
+                                               split='test', data_type='shape',
+                                             debug=args.debug)
+
+    test_sketch_dataset = PointCloudDataLoader(npoints=1024, list_file=args.list_file,
+                                               uniform=True,
+                                               data_dir=args.data_dir,
+                                               split='test', data_type='aligned_sketch',
+                                             debug=args.debug)
+
+
+    test_shape_loader = torch.utils.data.DataLoader(test_shape_dataset, batch_size=test_batch_size, shuffle=False, num_workers=4)
+    test_sketch_loader = torch.utils.data.DataLoader(test_sketch_dataset, batch_size=test_batch_size, shuffle=False, num_workers=4)
+    return test_shape_loader, test_sketch_loader
+
 def get_dataloader(args):
     list_file = args.list_file
     if args.name == 'pointnet':
@@ -18,9 +38,9 @@ def get_dataloader(args):
                                              split='val', data_type='shape')
 
         train_sketch_dataset = PointCloudDataLoader(args, list_file=list_file, npoint=args.num_point, uniform=args.uniform,
-                                             split='train', data_type='sketch', abstract=args.abstract, target=args.sketch_target, sketch_dir=args.sketch_dir, random_sample=args.random_sample)
+                                             split='train', data_type='sketch', abstract=args.abstract, target=args.sketch_target, random_sample=args.random_sample)
         test_sketch_dataset = PointCloudDataLoader(args, list_file=list_file, npoint=args.num_point, uniform=args.uniform,
-                                             split='val', data_type='sketch', abstract=args.abstract, sketch_dir=args.sketch_dir, random_sample=args.random_sample)
+                                             split='val', data_type='sketch', abstract=args.abstract, random_sample=args.random_sample)
     elif args.name == 'ngvnn':
         from dataset.MultiViewLoader import MultiviewImgDataset
 

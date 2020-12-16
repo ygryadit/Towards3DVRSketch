@@ -16,7 +16,7 @@ from tools.evaluation import map_and_auc, compute_distance, compute_map
 from torch.autograd import Variable
 import chamfer_python
 from Dataset_Loader import get_dataloader
-from config import DATASETS, NUM_VIEWS
+from args import get_args
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -72,7 +72,6 @@ def main(args):
 
 
     '''LOG'''
-    # args = parse_args()
     args.abstract = [float(item) for item in args.abstract.split(',')]
     config_f = open(os.path.join(log_dir, 'config.json'), 'w')
     json.dump(vars(args), config_f)
@@ -93,7 +92,7 @@ def main(args):
     train_shape_loader, train_sketch_loader, test_shape_loader, test_sketch_loader = get_dataloader(args)
 
     '''MODEL LOADING'''
-    num_class = DATASETS[args.dataset]['n_classes']
+    num_class = args.num_class
 
     if args.name == 'pointnet':
         import importlib
@@ -242,12 +241,12 @@ def train(logger, sketch_dataloader, shape_dataloader, model, criterion, optimiz
         optim = optimizer
 
     for i, (sketch_list, (shapes, p_labels)) in enumerate(zip(sketch_dataloader, shape_dataloader)):
-        if args.sketch_target is  '':
+        if args.sketch_target == '':
             sketches, k_labels = sketch_list
         else:
             sketches, targets, k_labels = sketch_list
         if args.name == 'pointnet':
-            if args.sketch_target is '':
+            if args.sketch_target == '':
                 points = torch.cat([sketches, shapes]).data.numpy()
                 target = torch.cat([k_labels, p_labels])
             else:
@@ -361,67 +360,67 @@ def validate(logger, sketch_dataloader, shape_dataloader, model, criterion):
     end = time.time()
 
     model = model.eval()
-
-    for i, (sketches, k_labels) in enumerate(sketch_dataloader):
-        if args.name == 'pointnet':
-            points = sketches.transpose(2, 1)
-            points, k_labels_v = points.cuda(), k_labels.cuda()
-            if args.reconstruct:
-                sketch_score, sketch_feat, _ = model(points)
+    with torch.no_grad():
+        for i, (sketches, k_labels) in enumerate(sketch_dataloader):
+            if args.name == 'pointnet':
+                points = sketches.transpose(2, 1)
+                points, k_labels_v = points.cuda(), k_labels.cuda()
+                if args.reconstruct:
+                    sketch_score, sketch_feat, _ = model(points)
+                else:
+                    sketch_score, sketch_feat = model(points)
+            elif args.name == 'ngvnn':
+                N, V, C, H, W = sketches.size()
+                in_data = Variable(sketches).view(-1, C, H, W).cuda()
+                k_labels_v = Variable(k_labels).cuda()
+                sketch_score, sketch_feat = model(in_data)
             else:
-                sketch_score, sketch_feat = model(points)
-        elif args.name == 'ngvnn':
-            N, V, C, H, W = sketches.size()
-            in_data = Variable(sketches).view(-1, C, H, W).cuda()
-            k_labels_v = Variable(k_labels).cuda()
-            sketch_score, sketch_feat = model(in_data)
-        else:
-            NotImplementedError
+                NotImplementedError
 
-        loss = crt_cls(sketch_score, k_labels_v)
+            loss = crt_cls(sketch_score, k_labels_v)
 
-        prec1 = misc.accuracy(sketch_score.data, k_labels_v.data, topk=(1,))[0]
-        sketch_losses.update(loss.data, sketch_score.shape[0])  # batchsize
-        sketch_top1.update(prec1, sketch_score.shape[0])
+            prec1 = misc.accuracy(sketch_score.data, k_labels_v.data, topk=(1,))[0]
+            sketch_losses.update(loss.data, sketch_score.shape[0])  # batchsize
+            sketch_top1.update(prec1, sketch_score.shape[0])
 
-        sketch_features.append(sketch_feat.data.cpu())
-        sketch_labels.append(k_labels)
-        sketch_scores.append(sketch_score.data.cpu())
+            sketch_features.append(sketch_feat.data.cpu())
+            sketch_labels.append(k_labels)
+            sketch_scores.append(sketch_score.data.cpu())
 
-        batch_time.update(time.time() - end)
+            batch_time.update(time.time() - end)
 
-    log_string(' *Sketch Prec@1 {top1.avg:.3f}'.format(top1=sketch_top1), logger)
+        log_string(' *Sketch Prec@1 {top1.avg:.3f}'.format(top1=sketch_top1), logger)
 
-    for i, (shapes, p_labels) in enumerate(shape_dataloader):
-        if args.name == 'pointnet':
-            points = shapes.transpose(2, 1)
-            points, p_labels_v = points.cuda(), p_labels.cuda()
-            if args.reconstruct:
-                shape_score, shape_feat, _ = model(points)
+        for i, (shapes, p_labels) in enumerate(shape_dataloader):
+            if args.name == 'pointnet':
+                points = shapes.transpose(2, 1)
+                points, p_labels_v = points.cuda(), p_labels.cuda()
+                if args.reconstruct:
+                    shape_score, shape_feat, _ = model(points)
+                else:
+                    shape_score, shape_feat = model(points)
+            elif args.name == 'ngvnn':
+                N, V, C, H, W = shapes.size()
+                in_data = Variable(shapes).view(-1, C, H, W).cuda()
+                p_labels_v = Variable(p_labels).cuda()
+                shape_score, shape_feat = model(in_data)
             else:
-                shape_score, shape_feat = model(points)
-        elif args.name == 'ngvnn':
-            N, V, C, H, W = shapes.size()
-            in_data = Variable(shapes).view(-1, C, H, W).cuda()
-            p_labels_v = Variable(p_labels).cuda()
-            shape_score, shape_feat = model(in_data)
-        else:
-            NotImplementedError
+                NotImplementedError
 
-        loss = crt_cls(shape_score, p_labels_v)
+            loss = crt_cls(shape_score, p_labels_v)
 
-        prec1 = misc.accuracy(shape_score.data, p_labels_v.data, topk=(1,))[0]
-        shape_losses.update(loss.data, shape_score.shape[0])  # batchsize
-        shape_top1.update(prec1, shape_score.shape[0])
+            prec1 = misc.accuracy(shape_score.data, p_labels_v.data, topk=(1,))[0]
+            shape_losses.update(loss.data, shape_score.shape[0])  # batchsize
+            shape_top1.update(prec1, shape_score.shape[0])
 
-        shape_features.append(shape_feat.data.cpu())
-        shape_labels.append(p_labels)
-        shape_scores.append(shape_score.data.cpu())
+            shape_features.append(shape_feat.data.cpu())
+            shape_labels.append(p_labels)
+            shape_scores.append(shape_score.data.cpu())
 
-        batch_time.update(time.time() - end)
-        end = time.time()
+            batch_time.update(time.time() - end)
+            end = time.time()
 
-    log_string(' *Shape Prec@1 {top1.avg:.3f}'.format(top1=shape_top1), logger)
+        log_string(' *Shape Prec@1 {top1.avg:.3f}'.format(top1=shape_top1), logger)
 
     shape_features = torch.cat(shape_features, 0).numpy()
     sketch_features = torch.cat(sketch_features, 0).numpy()
@@ -449,6 +448,20 @@ def validate(logger, sketch_dataloader, shape_dataloader, model, criterion):
 
 
 if __name__ == '__main__':
-    args = parse_args()
+    args = get_args()
+    if args.windows:
+        from args import get_parser
+        parser = get_parser()
+        args = parser.parse_args(args=[
+            '-debug',
+            '-epoch', '100',
+            '-margin', '1.8',
+            '-abstract', '1.0',
+            '-uniform',
+            '-reconstruct',
+            '-sketch_target', 'network',
+            '-list_file', r'C:\Users\ll00931\Documents\3DV_dataset\list\{}.txt',
+            '-data_dir', r'C:\Users\ll00931\Documents\3DV_dataset\point'
+            ])
     experiment_dir = main(args)
-    os.system('sh run_eval_all.sh 5 %s' % experiment_dir)
+    # os.system('sh run_eval_all.sh 5 %s' % experiment_dir)

@@ -1,9 +1,7 @@
 import numpy as np
-import warnings
 import os
+import warnings
 from torch.utils.data import Dataset
-from config import POINT_DIR
-import glob
 
 warnings.filterwarnings('ignore')
 
@@ -42,8 +40,8 @@ def farthest_point_sample(point, npoint, fix=False):
 
 
 class PointCloudDataLoader(Dataset):
-    def __init__(self, list_file='', npoint=1024, split='train', uniform=False, cache_size=15000, data_type='', abstract=0.5, target='', sketch_dir='coverage20_modelnet_merge', random_sample=False):
-
+    def __init__(self, args, list_file='', npoint=1024, split='train', uniform=False, cache_size=15000, data_type='', abstract=0.5, target='', random_sample=False):
+        POINT_DIR = args.data_dir
         self.npoints = npoint
         self.uniform = uniform
         self.list_file = list_file
@@ -57,14 +55,10 @@ class PointCloudDataLoader(Dataset):
             abstract = abstract[0]
         np.random.seed(0)
 
-        if not isinstance(abstract, list):
-            if abstract > 1.0 and data_type=='sketch':
-                data_type = 'human'
-
         if data_type=='shape':
             for line in self.name_list:
                 model_name, class_id = line.split(' ')
-                shape_path = POINT_DIR + '/origin/' + model_name + '_opt.txt'
+                shape_path = os.path.join(POINT_DIR, 'shape', model_name + '_opt.txt')
                 self.datapath.append(shape_path)
                 self.labels.append(int(class_id))
 
@@ -72,7 +66,7 @@ class PointCloudDataLoader(Dataset):
             if isinstance(abstract, list):
                 for line in self.name_list:
                     model_name, class_id = line.split(' ')
-                    sketch_paths = [POINT_DIR + '/'+sketch_dir +'/' + model_name + '_sketch_{}.txt'.format(ab) for ab in abstract]
+                    sketch_paths = [os.path.join(POINT_DIR, 'sketch', model_name + '_sketch_{}.txt'.format(ab)) for ab in abstract]
                     self.datapath.extend(sketch_paths)
                     self.labels.extend([int(class_id)] * len(abstract))
             else:
@@ -81,24 +75,15 @@ class PointCloudDataLoader(Dataset):
                     if random_sample:
                         abstract = np.random.choice(abstract_set, 1, replace=False)[0]
 
-                    sketch_path = POINT_DIR +'/'+sketch_dir +'/' + model_name + '_sketch_{}.txt'.format(abstract)
+                    sketch_path = os.path.join(POINT_DIR, 'sketch',  model_name + '_sketch_{}.txt'.format(abstract))
                     self.datapath.append(sketch_path)
                     self.labels.append(int(class_id))
         elif data_type=='network':
             for line in self.name_list:
                 model_name, class_id = line.split(' ')
-                network_path = POINT_DIR + '/coverage20_modelnet_merge/' + model_name + '_sketch_0.0.txt'
+                network_path = os.path.join(POINT_DIR, 'network', model_name + '_opt_quad_network_20_aggredated.txt')
                 self.datapath.append(network_path)
                 self.labels.append(int(class_id))
-        elif data_type=='human':
-            human_list = '/yrfs1/intern/lingluo3/data/list/ModelNet10/equal/human_test.txt'
-            name_list = [line.rstrip() for line in open(human_list)]
-            for line in name_list:
-                model_name, class_id = line.split(' ')
-                human_path = POINT_DIR + '/human_point/' + model_name + '.txt'
-                self.datapath.append(human_path)
-                self.labels.append(int(class_id))
-
 
         print('The size of %s data is %d' % (split, len(self.datapath)))
 
@@ -109,7 +94,7 @@ class PointCloudDataLoader(Dataset):
             self.target_datapath = []
             for line in self.name_list:
                 model_name, class_id = line.split(' ')
-                sketch_path = POINT_DIR + '/coverage20_modelnet_merge/' + model_name + '_sketch_0.0.txt'
+                sketch_path = os.path.join(POINT_DIR, 'network', model_name + '_opt_quad_network_20_aggredated.txt')
                 self.target_datapath.append(sketch_path)
             if isinstance(abstract, list):
                 self.target_datapath = self.target_datapath * len(abstract)
@@ -118,7 +103,7 @@ class PointCloudDataLoader(Dataset):
             self.target_datapath = []
             for line in self.name_list:
                 model_name, class_id = line.split(' ')
-                shape_path = POINT_DIR + '/origin/' + model_name + '_opt.txt'
+                shape_path = os.path.join(POINT_DIR, 'shape', model_name + '_opt.txt')
                 self.target_datapath.append(shape_path)
             if isinstance(abstract, list):
                 self.target_datapath = self.target_datapath * len(abstract)
