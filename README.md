@@ -11,7 +11,7 @@ Project page: https://tinyurl.com/3DSketch3DV
 The repository provides the code for synthetic sketch generation and the evaluated deep models.
 
 # Synthetic sketch generation
-## 1. Conver to manifold shapes
+## 1. Convert to manifold shapes
 Since many shapes in the publicly available datasets are not manifold shapes, we first recommend preprocessign shapes with this method:
 https://github.com/hjwdzh/ManifoldPlus
 ```
@@ -42,6 +42,7 @@ https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/
 ## 3. Syntheic sketch generation
 ### Dependencies
 * libigl https://libigl.github.io/
+* pyknotid https://pyknotid.readthedocs.io/en/latest/
 ### Step 1: Aggregation (C++)
 To compile the code in SyntheticSketches/merge_lines, please see the README in SyntheticSketches/merge_lines
 ```
