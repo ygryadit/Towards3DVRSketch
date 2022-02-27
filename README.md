@@ -39,7 +39,7 @@ https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/
   address = {New York, NY, USA}
 }
 ```
-## 3. Syntheic sketch generation
+## 3. Synthetic sketch generation
 ### Dependencies
 * libigl https://libigl.github.io/
 * pyknotid https://pyknotid.readthedocs.io/en/latest/
