@@ -2,24 +2,16 @@
 ---
 ## Prerequisites
 
+- Pytorch 1.7.0
 - point_cloud_utils: https://github.com/fwilliams/point-cloud-utils
-- tensorboardX
+- tensorboardX (optional)
 
-## Dataset
 
-This dataset includes .obj and pointcloud files of:
-- 3956 shapes + curve network + synthetic sketch from ModelNet10
-- 167 human sketches from chair and bathtub classes of ModelNet10
-
-Download link: [Google Drive][1]
-
-## Usage 
-
-### Data Preparation
+## Data Preparation
 
 Once downloaded the dataset to local path $DATA_DIR, we need to process those objs files into pointcloud for point-based methods or render views for view-based methods.
 
-#### Point sampling
+### Point sampling
 
 We need to sample 10000 points from each obj file by running data_prep/gen_pointcloud.py :
 ```
@@ -37,9 +29,25 @@ python data_prep/gen_pointcloud.py -- $DATA_DIR/curve_network $DATA_DIR/curve_ne
 python data_prep/gen_pointcloud.py -- $DATA_DIR/synthetic_sketch $DATA_DIR/synthetic_sketch/point sketch
 python data_prep/gen_pointcloud.py -- $DATA_DIR/human_sketch $DATA_DIR/human_sketch/point sketch
 ```
-#### View rendering
+### View rendering
+
+> For both 3D shapes and 3D sketches we experiment with two types of rendering styles: Phong Shading and depth maps. For 3D sketches we represent each line as a 3D tube.
 
 We use Blender to render views, so the first step is to replace 'blender_path' in line 5 of data_prep\run_model_mesh.py with your local Blender path. 
+
+- $data_type: 
+    - `sketch`: sketch/curve metwork
+    - `shape`: shape
+- $render_type: 
+    - `Phong`: Phong Shading
+    - `depth`: Depth maps
+
+```
+python data_prep/run_render_img.py -- $object_dir $save_dir $data_type $render_type
+
+# eg. rendering depth views for human sketches: 
+python data_prep/run_render_img.py -- $DATA_DIR/human_sketch  $DATA_DIR/human_sketch/depth_view sketch depth
+```
 
 ### Training
 
@@ -66,5 +74,3 @@ python train_triplet.py \
 Our work are based on several useful papers and projects:
 
 - point_cloud_utils: https://github.com/fwilliams/point-cloud-utils
-
-[1]: https://drive.google.com/file/d/1FkKZfWt7O4xMy4ir5kCYcmwZLPk1uBcZ/view?usp=sharing

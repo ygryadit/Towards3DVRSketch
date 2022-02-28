@@ -7,6 +7,9 @@ Ling Luo, Yulia Gryaditskaya, Yongxin Yang, Tao Xiang, Yi-Zhe Song
 Proceedings of International Conference on 3D Vision (3DV), 2020
 ```
 Project page: https://tinyurl.com/3DSketch3DV
+
+> Important Update: We have published the first fine-grained human sketch dataset at https://cvssp.org/data/VRChairSketch/ for _Fine-Grained VR Sketching: Dataset and Insights_ on 3DV 2021.
+
 # Description
 The repository provides the code for synthetic sketch generation and the evaluated deep models.
 
@@ -64,8 +67,20 @@ python SyntheticSketches/disturb_3d.py folder_netwroks folder_save
 is a path to the networks from the previous step or generated with FlowRep;
 `folder_save`
 the path where to save the synthetic sketches.
+
+# Dataset
+
+This dataset includes .obj and pointcloud files of:
+- 3956 shapes + curve network + synthetic sketch from ModelNet10
+- 167 human sketches from chair and bathtub classes of ModelNet10
+
+Download link: [Google Drive][1]
+
 # Deep models
 The deep models and their usage is described in the subfolder: '3DSketchRetrieval'
 
 # Contact information
 Ling Luo: ling.rowling.luo@gmail.com
+
+
+[1]: https://drive.google.com/file/d/1FkKZfWt7O4xMy4ir5kCYcmwZLPk1uBcZ/view?usp=sharing
