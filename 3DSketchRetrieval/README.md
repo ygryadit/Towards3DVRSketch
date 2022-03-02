@@ -21,7 +21,7 @@ There are 2 choices for DATA_TYPE: 'shape' and 'sketch'.
 - 'shape' mode samples points from faces, which is used to generate pointcloud from shapes with Monte-Carlo sampling.
 - 'sketch' mode samples points from edges, which is designed for generating pointcloud from curve network and human/synthetic sketches with equidistant sampling.
 
-```
+```shell
 # shape mode
 python data_prep/gen_pointcloud.py -- $DATA_DIR/shape $DATA_DIR/shape/point shape
 # sketch mode
@@ -33,8 +33,12 @@ python data_prep/gen_pointcloud.py -- $DATA_DIR/human_sketch $DATA_DIR/human_ske
 
 > For both 3D shapes and 3D sketches we experiment with two types of rendering styles: Phong Shading and depth maps. For 3D sketches we represent each line as a 3D tube.
 
-We use Blender to render views, so the first step is to replace 'blender_path' in line 5 of data_prep\run_model_mesh.py with your local Blender path. 
+We use Blender to render views, so the first step is to replace [```blender_path```](data_prep/run_render_img.py#L6) with your local Blender path. 
 
+There are 4 arguments for data_prep/run_render_img.py :
+
+- $object_dir: directory path of your obj files
+- $save_dir
 - $data_type: 
     - `sketch`: sketch/curve metwork
     - `shape`: shape
@@ -42,34 +46,47 @@ We use Blender to render views, so the first step is to replace 'blender_path' i
     - `Phong`: Phong Shading
     - `depth`: Depth maps
 
-```
+```shell
 python data_prep/run_render_img.py -- $object_dir $save_dir $data_type $render_type
 
 # eg. rendering depth views for human sketches: 
 python data_prep/run_render_img.py -- $DATA_DIR/human_sketch  $DATA_DIR/human_sketch/depth_view sketch depth
 ```
 
-### Training
+## Training
 
-Change the ROOT_DIR in config.py to your data path. Run train_triplet.py  by:
+Run train_triplet.py  by:
 
-```
+```shell
 python train_triplet.py \
     -epoch 300 \
     -batch_size 12 \
-    --lr 1e-2 \
-    --weight_decay 1e-4 \
-    --save_freq 10 \
-    --log_freq 10 \
-    --margin 0.3 \
-    --save_name $SAVE_NAME \
+    -learning_rate 1e-2 \
+    -margin 0.3 \
+    -data_dir $DATA_DIR\
     --list_file $LIST_FILE_PATH \
-    --train
 ```
 
-### Evaluation
+## Evaluation
 
-### Acknowledgements
+Run evaluation.py  by:
+
+```shell
+python evaluation.py \
+    -epoch 300 \
+    -batch_size 12 \
+    -model_path $MODEL_PATH \
+    -data_dir $DATA_DIR\
+    --list_file $LIST_FILE_PATH \
+```
+
+You can easily adapt the evaluation code for inference only by:
+
+```python
+print('start argsort')
+result = np.argsort(dist, axis=1) # the ranking of retrieved shapes
+```
+## Acknowledgements
 
 Our work are based on several useful papers and projects:
 

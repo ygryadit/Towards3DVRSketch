@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            // "program": "${file}",
+            "program": "3DSketchRetrieval/evaluation_new.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-epoch", "300", 
+                "-batch_size", "12",
+                "-learning_rate", "1e-2",
+                "-margin", "0.3",
+                // "-data_dir", "/vol/vssp/SF_datasets/multiview/3VS/datasets/3DV_dataset/point",
+                // "-list_file", "/vol/vssp/SF_datasets/multiview/3VS/datasets/3DV_dataset/list/{}.txt",
+
+                // '-epoch', '100',
+                // '-margin', '1.8',
+                "-abstract", "1.0",
+                "-uniform",
+                // "-reconstruct",
+                "-sketch_target", "network",
+                "-model_path", "3DSketchRetrieval/save/pointnet/2022-03-02_08-43_cvplws98",
+                "-list_file", "/vol/vssp/SF_datasets/multiview/3VS/datasets/3DV_dataset/list/{}.txt",
+                "-data_dir", "/vol/vssp/SF_datasets/multiview/3VS/datasets/3DV_dataset/point",
+    
+            ]
+        }
+    ]
+}

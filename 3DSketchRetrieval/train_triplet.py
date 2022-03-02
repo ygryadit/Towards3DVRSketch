@@ -330,7 +330,7 @@ def train(logger, sketch_dataloader, shape_dataloader, model, criterion, optimiz
                   'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
                   'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
                   'Trploss {triplet.val:.4f}({triplet.avg:.3f})\t'
-                  'Triplet num {triplet_num:.2f}\t'
+                #   'Triplet num {triplet_num:.2f}\t'
                   'Reconloss {recon.val: .4f}({recon.avg:.3f})'.format(
                 epoch, i, len(sketch_dataloader), triplet_num=triplet_num, batch_time=batch_time,
                 loss=losses, top1=top1, triplet=tpl_losses, recon=rec_losses), logger)
@@ -449,19 +449,5 @@ def validate(logger, sketch_dataloader, shape_dataloader, model, criterion):
 
 if __name__ == '__main__':
     args = get_args()
-    if args.windows:
-        from args import get_parser
-        parser = get_parser()
-        args = parser.parse_args(args=[
-            '-debug',
-            '-epoch', '100',
-            '-margin', '1.8',
-            '-abstract', '1.0',
-            '-uniform',
-            '-reconstruct',
-            '-sketch_target', 'network',
-            '-list_file', r'C:\Users\ll00931\Documents\3DV_dataset\list\{}.txt',
-            '-data_dir', r'C:\Users\ll00931\Documents\3DV_dataset\point'
-            ])
     experiment_dir = main(args)
     # os.system('sh run_eval_all.sh 5 %s' % experiment_dir)

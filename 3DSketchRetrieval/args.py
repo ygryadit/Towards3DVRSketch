@@ -40,17 +40,15 @@ def add_args(parser):
 
     parser.add_argument('-print-freq', type=int, default=50)
     parser.add_argument('-gradient_clip', type=float, default=0.05)  # previous i set it to be 0.01
-    parser.add_argument("-network_target", action='store_true', help="whether submitted", default=False)
+    parser.add_argument("-network_target", action='store_true', help="whether to use curve network as reconstruction target", default=False)
 
-    parser.add_argument("-sketch_anchor", action='store_true', help="whether submitted", default=False)
-    parser.add_argument("-reconstruct", action='store_true', help="whether submitted", default=False)
+    parser.add_argument("-sketch_anchor", action='store_true', help="whether to use sketches as anchors", default=False)
+    parser.add_argument("-reconstruct", action='store_true', help="whether to use reconstruction branch", default=False)
     parser.add_argument("-sketch_target", type=str, default='')
 
     parser.add_argument("-view_type", type=str, default='whiteshaded')
-    parser.add_argument("-random_sample", action='store_true', help="whether submitted", default=False)
+    parser.add_argument("-random_sample", action='store_true', help="whether to use random sampling", default=False)
 
-    parser.add_argument('-windows', action='store_true',
-                        help='Whether debug locally.')
     parser.add_argument('-debug', action='store_true',
                         help='Whether debug locally.')
     parser.add_argument("-model_path", type=str, default='')

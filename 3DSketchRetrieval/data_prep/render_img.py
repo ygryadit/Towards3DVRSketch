@@ -209,7 +209,7 @@ if __name__ == '__main__':
     print(model_path)
     print(export_dir)
     type = argv[2]
-    if type == 'network':
+    if type == 'sketch':
         render_sketch(model_path, export_dir)
     else:
         render_mesh(model_path, export_dir)
