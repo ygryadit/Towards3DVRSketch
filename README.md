@@ -8,12 +8,13 @@ Proceedings of International Conference on 3D Vision (3DV), 2020
 ```
 Project page: https://tinyurl.com/3DSketch3DV
 
-> Important Update: We have published the first fine-grained human sketch dataset at https://cvssp.org/data/VRChairSketch/ for _Fine-Grained VR Sketching: Dataset and Insights_ on 3DV 2021.
+> :tada: Important Update: We have published the first fine-grained human sketch dataset at https://cvssp.org/data/VRChairSketch/ for _Fine-Grained VR Sketching: Dataset and Insights_ on 3DV 2021.
 
 # Description
 The repository provides the code for synthetic sketch generation and the evaluated deep models.
 
 # Synthetic sketch generation
+
 ## 1. Convert to manifold shapes
 Since many shapes in the publicly available datasets are not manifold shapes, we first recommend preprocessign shapes with this method:
 https://github.com/hjwdzh/ManifoldPlus
@@ -47,6 +48,12 @@ https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/
 ### Dependencies
 * libigl https://libigl.github.io/
 * pyknotid https://pyknotid.readthedocs.io/en/latest/
+* similaritymeasures 
+
+```
+pip install pyknotid
+pip install similaritymeasures
+```
 
 ### Step 1: Aggregation (C++)
 To compile the code in SyntheticSketches/merge_lines, please see the README in SyntheticSketches/merge_lines
@@ -74,7 +81,7 @@ the path where to save the synthetic sketches.
 
 # Dataset
 
-This dataset includes .obj and pointcloud files of:
+This dataset includes .obj files and train/vallidation/test partition of:
 - 3956 shapes + curve network + synthetic sketch from ModelNet10
 - 167 human sketches from chair and bathtub classes of ModelNet10
 
