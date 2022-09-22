@@ -6,6 +6,9 @@ The code for the paper:
 Ling Luo, Yulia Gryaditskaya, Yongxin Yang, Tao Xiang, Yi-Zhe Song
 Proceedings of International Conference on 3D Vision (3DV), 2020
 ```
+
+Paper Link: [[Paper]](https://arxiv.org/abs/2209.10020) [[Supplemental]](https://drive.google.com/file/d/1nm8Taxc4Ji8iHdcjljygEh3v2yIdmbsO/view?usp=sharing)
+
 Project page: https://tinyurl.com/3DSketch3DV
 
 > :tada: Important Update: We have published the first fine-grained human sketch dataset at https://cvssp.org/data/VRChairSketch/ for _Fine-Grained VR Sketching: Dataset and Insights_ on 3DV 2021.
